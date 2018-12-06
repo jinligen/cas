@@ -135,9 +135,8 @@ public abstract class BaseTicketRegistryTests {
             CoreAuthenticationTestUtils.getAuthentication(),
             new NeverExpiresExpirationPolicy()));
 
-        assertThrows(ClassCastException.class, () -> {
-            ticketRegistry.getTicket(ticketGrantingTicketId, ServiceTicket.class);
-        }, "Should throw ClassCastException. useEncryption["+ useEncryption +"]");
+        assertThrows(ClassCastException.class, () -> ticketRegistry.getTicket(ticketGrantingTicketId, ServiceTicket.class),
+            "Should throw ClassCastException. useEncryption["+ useEncryption +"]");
     }
 
     @RepeatedTest(2)

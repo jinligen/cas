@@ -28,42 +28,43 @@ public class JaasAuthenticationHandlerSystemConfigurationTests {
     private JaasAuthenticationHandler handler;
 
     @BeforeEach
-    public void initialize() throws Exception {
-        val resource = new ClassPathResource("jaas-system.conf");
-        val fileName = new File(System.getProperty("java.io.tmpdir"), "jaas-system.conf");
-        try (val writer = Files.newBufferedWriter(fileName.toPath(), StandardCharsets.UTF_8)) {
+    public void initialize() {
+        assertDoesNotThrow(() -> {
+            val resource = new ClassPathResource("jaas-system.conf");
+            val fileName = new File(System.getProperty("java.io.tmpdir"), "jaas-system.conf");
+            val writer = Files.newBufferedWriter(fileName.toPath(), StandardCharsets.UTF_8);
             IOUtils.copy(resource.getInputStream(), writer, Charset.defaultCharset());
             writer.flush();
-        }
-        if (fileName.exists()) {
-            System.setProperty("java.security.auth.login.config", '=' + fileName.getCanonicalPath());
-            this.handler = new JaasAuthenticationHandler("", null, null, null);
-        }
-    }
-
-    @Test
-    public void verifyWithAlternativeRealm() throws Exception {
-        this.handler.setRealm("TEST");
-        assertThrows(LoginException.class, () -> {
-            this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, "test1"));
+            if (fileName.exists()) {
+                System.setProperty("java.security.auth.login.config", '=' + fileName.getCanonicalPath());
+                this.handler = new JaasAuthenticationHandler("", null, null, null);
+            }
         });
     }
 
     @Test
-    public void verifyWithAlternativeRealmAndValidCredentials() throws Exception {
+    public void verifyWithAlternativeRealm() {
         this.handler.setRealm("TEST");
-        assertNotNull(this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, USERNAME)));
+        assertThrows(LoginException.class,
+            () -> this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, "test1")));
     }
 
     @Test
-    public void verifyWithValidCredentials() throws Exception {
-        assertNotNull(this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
-    }
-
-    @Test
-    public void verifyWithInvalidCredentials() throws Exception {
-        assertThrows(LoginException.class, () -> {
-            this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, "test1"));
+    public void verifyWithAlternativeRealmAndValidCredentials() {
+        assertDoesNotThrow(() -> {
+            this.handler.setRealm("TEST");
+            assertNotNull(this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, USERNAME)));
         });
+    }
+
+    @Test
+    public void verifyWithValidCredentials() {
+        assertDoesNotThrow(() -> assertNotNull(this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword())));
+    }
+
+    @Test
+    public void verifyWithInvalidCredentials() {
+        assertThrows(LoginException.class,
+            () -> this.handler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword(USERNAME, "test1")));
     }
 }

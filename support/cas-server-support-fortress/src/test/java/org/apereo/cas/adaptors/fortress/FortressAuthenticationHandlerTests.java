@@ -49,10 +49,8 @@ public class FortressAuthenticationHandlerTests {
     public void verifyUnauthorizedUserLoginIncorrect() throws Exception {
         Mockito.when(accessManager.createSession(ArgumentMatchers.any(User.class), ArgumentMatchers.anyBoolean()))
             .thenThrow(new PasswordException(GlobalErrIds.USER_PW_INVLD, "error message"));
-        assertThrows(FailedLoginException.class, () -> {
-            fortressAuthenticationHandler.authenticateUsernamePasswordInternal(
-                CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword(), null);
-        });
+        assertThrows(FailedLoginException.class, () -> fortressAuthenticationHandler.authenticateUsernamePasswordInternal(
+            CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword(), null));
     }
 
     @Test

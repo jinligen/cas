@@ -28,7 +28,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import static org.apereo.cas.util.AssertThrows.*;
+import static org.apereo.cas.util.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 

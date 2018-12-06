@@ -11,7 +11,6 @@ import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.FailedLoginException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,11 +36,13 @@ public class AcceptUsersAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifySupportsSpecialCharacters() throws Exception {
-        val c = new UsernamePasswordCredential();
-        c.setUsername("brian");
-        c.setPassword("t�st");
-        assertEquals("brian", this.authenticationHandler.authenticate(c).getPrincipal().getId());
+    public void verifySupportsSpecialCharacters() {
+        assertDoesNotThrow(() -> {
+            val c = new UsernamePasswordCredential();
+            c.setUsername("brian");
+            c.setPassword("t�st");
+            assertEquals("brian", this.authenticationHandler.authenticate(c).getPrincipal().getId());
+        });
     }
 
     @Test
@@ -65,64 +66,54 @@ public class AcceptUsersAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyAuthenticatesUserInMap() throws Exception {
+    public void verifyAuthenticatesUserInMap() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername(SCOTT);
         c.setPassword(RUTGERS);
 
-        try {
+        assertDoesNotThrow(() -> {
             assertEquals(SCOTT, this.authenticationHandler.authenticate(c).getPrincipal().getId());
-        } catch (final GeneralSecurityException e) {
-            throw new AssertionError("Authentication exception caught but it should not have been thrown.", e);
-        }
+        });
     }
 
     @Test
-    public void verifyFailsUserNotInMap() throws Exception {
+    public void verifyFailsUserNotInMap() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername("fds");
         c.setPassword(RUTGERS);
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullUserName() throws Exception {
+    public void verifyFailsNullUserName() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername(null);
         c.setPassword("user");
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullUserNameAndPassword() throws Exception {
+    public void verifyFailsNullUserNameAndPassword() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername(null);
         c.setPassword(null);
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullPassword() throws Exception {
+    public void verifyFailsNullPassword() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername(SCOTT);
         c.setPassword(null);
 
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(FailedLoginException.class, () -> this.authenticationHandler.authenticate(c));
     }
 }

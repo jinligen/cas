@@ -12,7 +12,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,18 +27,21 @@ public class ReturnRestfulAttributeReleasePolicyTests {
     private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
 
     @Test
-    public void verifySerializeAttributeReleasePolicyToJson() throws IOException {
-        val policyWritten = new ReturnRestfulAttributeReleasePolicy("http://endpoint.example.org");
-        MAPPER.writeValue(JSON_FILE, policyWritten);
-        val policyRead = MAPPER.readValue(JSON_FILE, ReturnRestfulAttributeReleasePolicy.class);
-        assertEquals(policyWritten, policyRead);
+    public void verifySerializeAttributeReleasePolicyToJson() {
+        assertDoesNotThrow(() -> {
+            val policyWritten = new ReturnRestfulAttributeReleasePolicy("http://endpoint.example.org");
+            MAPPER.writeValue(JSON_FILE, policyWritten);
+            val policyRead = MAPPER.readValue(JSON_FILE, ReturnRestfulAttributeReleasePolicy.class);
+            assertEquals(policyWritten, policyRead);
+        });
     }
 
     @Test
-    public void verifyPolicy() throws IOException {
-        val data = MAPPER.writeValueAsString(CollectionUtils.wrap("givenName", "CASUSER", "familyName", "CAS"));
-        try (val webServer = new MockWebServer(9299,
-            new ByteArrayResource(data.getBytes(StandardCharsets.UTF_8), "REST Output"), MediaType.APPLICATION_JSON_VALUE)) {
+    public void verifyPolicy() {
+        assertDoesNotThrow(() -> {
+            val data = MAPPER.writeValueAsString(CollectionUtils.wrap("givenName", "CASUSER", "familyName", "CAS"));
+            val webServer = new MockWebServer(9299,
+                new ByteArrayResource(data.getBytes(StandardCharsets.UTF_8), "REST Output"), MediaType.APPLICATION_JSON_VALUE);
             webServer.start();
 
             val policyWritten = new ReturnRestfulAttributeReleasePolicy("http://localhost:9299");
@@ -47,8 +49,6 @@ public class ReturnRestfulAttributeReleasePolicyTests {
                 CoreAuthenticationTestUtils.getService(),
                 CoreAuthenticationTestUtils.getRegisteredService());
             assertFalse(attributes.isEmpty());
-        } catch (final Exception e) {
-            throw new AssertionError(e.getMessage(), e);
-        }
+        });
     }
 }

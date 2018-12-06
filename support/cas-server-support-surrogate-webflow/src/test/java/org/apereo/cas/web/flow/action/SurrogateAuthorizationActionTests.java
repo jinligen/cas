@@ -75,8 +75,6 @@ public class SurrogateAuthorizationActionTests extends BaseSurrogateInitialAuthe
         WebUtils.putRegisteredService(context, registeredService);
         val request = new MockHttpServletRequest();
         context.setExternalContext(new ServletExternalContext(new MockServletContext(), request, new MockHttpServletResponse()));
-        assertThrows(PrincipalException.class, () -> {
-            surrogateAuthorizationCheck.execute(context);
-        });
+        assertThrows(PrincipalException.class, () -> surrogateAuthorizationCheck.execute(context));
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,10 +45,12 @@ public class DefaultPrincipalAttributesRepositoryTests extends BaseCasCoreTests 
     }
 
     @Test
-    public void verifySerializeADefaultPrincipalAttributesRepositoryToJson() throws IOException {
-        val repositoryWritten = new DefaultPrincipalAttributesRepository();
-        MAPPER.writeValue(JSON_FILE, repositoryWritten);
-        val repositoryRead = MAPPER.readValue(JSON_FILE, DefaultPrincipalAttributesRepository.class);
-        assertEquals(repositoryWritten, repositoryRead);
+    public void verifySerializeADefaultPrincipalAttributesRepositoryToJson() {
+        assertDoesNotThrow(() -> {
+            val repositoryWritten = new DefaultPrincipalAttributesRepository();
+            MAPPER.writeValue(JSON_FILE, repositoryWritten);
+            val repositoryRead = MAPPER.readValue(JSON_FILE, DefaultPrincipalAttributesRepository.class);
+            assertEquals(repositoryWritten, repositoryRead);
+        });
     }
 }

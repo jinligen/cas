@@ -32,7 +32,7 @@ public class GroovyPasswordPolicyHandlingStrategyTests {
     public void verifyStrategySupportsDefault() {
         val resource = new ClassPathResource("lppe-strategy.groovy");
 
-        val s = new GroovyPasswordPolicyHandlingStrategy(resource);
+        val s = new GroovyPasswordPolicyHandlingStrategy<AuthenticationResponse>(resource);
         val res = mock(AuthenticationResponse.class);
         when(res.getAuthenticationResultCode()).thenReturn(AuthenticationResultCode.INVALID_CREDENTIAL);
         when(res.getResult()).thenReturn(false);
@@ -47,10 +47,8 @@ public class GroovyPasswordPolicyHandlingStrategyTests {
     @Test
     public void verifyStrategyHandlesErrors() {
         val resource = new ClassPathResource("lppe-strategy-throws-error.groovy");
-        val s = new GroovyPasswordPolicyHandlingStrategy(resource);
+        val s = new GroovyPasswordPolicyHandlingStrategy<AuthenticationResponse>(resource);
         val res = mock(AuthenticationResponse.class);
-        assertThrows(AccountExpiredException.class, () -> {
-            s.handle(res, mock(PasswordPolicyConfiguration.class));
-        });
+        assertThrows(AccountExpiredException.class, () -> s.handle(res, mock(PasswordPolicyConfiguration.class)));
     }
 }

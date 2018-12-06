@@ -31,25 +31,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIfContinuousIntegration
 public class AuthenticatedLdapAuthenticationHandlerTests extends BaseLdapAuthenticationHandlerTests {
     @Test
-    public void verifyAuthenticateNotFound() throws Throwable {
-        try {
-            assertThrows(AccountNotFoundException.class, () -> {
-                this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("notfound", "badpassword"))));
-            });
-        } catch (final Exception e) {
-            throw e.getCause();
-        }
+    public void verifyAuthenticateNotFound() {
+        assertThrows(AccountNotFoundException.class, () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("notfound", "badpassword")))));
     }
 
     @Test
-    public void verifyAuthenticateFailureNotFound() throws Throwable {
+    public void verifyAuthenticateFailureNotFound() {
         assertNotEquals(handler.size(), 0);
-        assertThrows(AccountNotFoundException.class, () -> {
-            try {
-                this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("bad", "bad"))));
-            } catch (final Exception e) {
-                throw e.getCause();
-            }
-        });
+        assertThrows(AccountNotFoundException.class,
+            () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("bad", "bad")))));
     }
 }

@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.security.auth.login.FailedLoginException;
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +45,7 @@ public class SearchModeSearchDatabaseAuthenticationHandlerTests {
     }
 
     @BeforeEach
-    public void initialize() throws Exception {
+    public void initialize() throws SQLException {
         this.handler = new SearchModeSearchDatabaseAuthenticationHandler("", null, null, null, this.dataSource, "username", "password", "cassearchusers");
 
         val c = this.dataSource.getConnection();
@@ -60,7 +61,7 @@ public class SearchModeSearchDatabaseAuthenticationHandlerTests {
     }
 
     @AfterEach
-    public void afterEachTest() throws Exception {
+    public void afterEachTest() throws SQLException {
         val c = this.dataSource.getConnection();
         val s = c.createStatement();
         c.setAutoCommit(true);
@@ -69,24 +70,28 @@ public class SearchModeSearchDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyNotFoundUser() throws Exception {
+    public void verifyNotFoundUser() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("hello", "world");
 
-        assertThrows(FailedLoginException.class, () -> {
-            this.handler.authenticate(c);
+        assertThrows(FailedLoginException.class, () -> this.handler.authenticate(c));
+    }
+
+    @Test
+    public void verifyFoundUser() {
+        val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user3", "psw3");
+
+        //noinspection CodeBlock2Expr
+        assertDoesNotThrow(() -> {
+            assertNotNull(this.handler.authenticate(c));
         });
     }
 
     @Test
-    public void verifyFoundUser() throws Exception {
-        val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user3", "psw3");
-        assertNotNull(this.handler.authenticate(c));
-    }
-
-    @Test
-    public void verifyMultipleUsersFound() throws Exception {
-        val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0");
-        assertNotNull(this.handler.authenticate(c));
+    public void verifyMultipleUsersFound() {
+        assertDoesNotThrow(() -> {
+            val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0");
+            assertNotNull(this.handler.authenticate(c));
+        });
     }
 
     @Entity(name = "cassearchusers")

@@ -37,9 +37,7 @@ public class BinaryCipherExecutorTests {
             "1234", 512, 16) {
         };
 
-        assertThrows(InvalidKeyException.class, () -> {
-            cc.encode(TEST_VALUE.getBytes(StandardCharsets.UTF_8), ArrayUtils.EMPTY_OBJECT_ARRAY);
-        });
+        assertThrows(InvalidKeyException.class, () -> cc.encode(TEST_VALUE.getBytes(StandardCharsets.UTF_8), ArrayUtils.EMPTY_OBJECT_ARRAY));
     }
 
     @Test

@@ -40,16 +40,14 @@ public class GroovyScriptAuthenticationPolicyTests {
     }
 
     @Test
-    public void verifyActionInlinedScriptFails() throws Exception {
+    public void verifyActionInlinedScriptFails() {
         val script = "groovy {"
             + " import org.apereo.cas.authentication.*\n"
             + " logger.info(principal.id)\n"
             + " return Optional.of(new AuthenticationException())\n"
             + '}';
         val p = new GroovyScriptAuthenticationPolicy(resourceLoader, script);
-        assertThrows(GeneralSecurityException.class, () -> {
-            p.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication(), new LinkedHashSet<>());
-        });
+        assertThrows(GeneralSecurityException.class, () -> p.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication(), new LinkedHashSet<>()));
     }
 
     @Test
@@ -64,8 +62,6 @@ public class GroovyScriptAuthenticationPolicyTests {
         val scriptFile = new File(FileUtils.getTempDirectoryPath(), "script.groovy");
         FileUtils.write(scriptFile, script, StandardCharsets.UTF_8);
         val p = new GroovyScriptAuthenticationPolicy(resourceLoader, "file:" + scriptFile.getCanonicalPath());
-        assertThrows(GeneralSecurityException.class, () -> {
-            p.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication(), new LinkedHashSet<>());
-        });
+        assertThrows(GeneralSecurityException.class, () -> p.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication(), new LinkedHashSet<>()));
     }
 }

@@ -66,22 +66,22 @@ public class ClientAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyOkWithSimpleIdentifier() throws GeneralSecurityException, PreventedException {
+    public void verifyOkWithSimpleIdentifier() {
         this.handler.setTypedIdUsed(false);
 
         val facebookProfile = new FacebookProfile();
         facebookProfile.setId(ID);
         this.fbClient.setProfileCreator((oAuth20Credentials, webContext) -> facebookProfile);
-        val result = this.handler.authenticate(this.clientCredential);
-        val principal = result.getPrincipal();
-        assertEquals(ID, principal.getId());
+        assertDoesNotThrow(() -> {
+            val result = this.handler.authenticate(this.clientCredential);
+            val principal = result.getPrincipal();
+            assertEquals(ID, principal.getId());
+        });
     }
 
     @Test
-    public void verifyNoProfile() throws GeneralSecurityException, PreventedException {
+    public void verifyNoProfile() {
         this.fbClient.setProfileCreator((oAuth20Credentials, webContext) -> null);
-        assertThrows(FailedLoginException.class, () -> {
-            this.handler.authenticate(this.clientCredential);
-        });
+        assertThrows(FailedLoginException.class, () -> this.handler.authenticate(this.clientCredential));
     }
 }

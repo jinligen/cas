@@ -55,16 +55,12 @@ public class FileTrustStoreSslSocketFactoryTests {
 
     @Test
     public void verifyTrustStoreNotFound() {
-        assertThrows(IOException.class, () -> {
-            sslFactory(new FileSystemResource("test.jks"), "changeit");
-        });
+        assertThrows(IOException.class, () -> sslFactory(new FileSystemResource("test.jks"), "changeit"));
     }
 
     @Test
     public void verifyTrustStoreBadPassword() {
-        assertThrows(IOException.class, () -> {
-            sslFactory(RESOURCE, "invalid");
-        });
+        assertThrows(IOException.class, () -> sslFactory(RESOURCE, "invalid"));
     }
 
     @Test

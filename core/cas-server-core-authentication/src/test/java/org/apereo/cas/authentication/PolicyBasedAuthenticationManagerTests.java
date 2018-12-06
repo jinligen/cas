@@ -128,9 +128,7 @@ public class PolicyBasedAuthenticationManagerTests {
         val manager = new PolicyBasedAuthenticationManager(authenticationExecutionPlan,
             false, mock(ApplicationEventPublisher.class));
 
-        assertThrows(AuthenticationException.class, () -> {
-            manager.authenticate(transaction);
-        });
+        assertThrows(AuthenticationException.class, () -> manager.authenticate(transaction));
     }
 
     @Test
@@ -161,9 +159,7 @@ public class PolicyBasedAuthenticationManagerTests {
         val manager = new PolicyBasedAuthenticationManager(authenticationExecutionPlan,
             false, mock(ApplicationEventPublisher.class));
 
-        assertThrows(AuthenticationException.class, () -> {
-            manager.authenticate(transaction);
-        });
+        assertThrows(AuthenticationException.class, () -> manager.authenticate(transaction));
     }
 
     @Test
@@ -194,9 +190,7 @@ public class PolicyBasedAuthenticationManagerTests {
         val manager = new PolicyBasedAuthenticationManager(authenticationExecutionPlan,
             false, mock(ApplicationEventPublisher.class));
 
-        assertThrows(AuthenticationException.class, () -> {
-            manager.authenticate(transaction);
-        });
+        assertThrows(AuthenticationException.class, () -> manager.authenticate(transaction));
     }
 
     @Test

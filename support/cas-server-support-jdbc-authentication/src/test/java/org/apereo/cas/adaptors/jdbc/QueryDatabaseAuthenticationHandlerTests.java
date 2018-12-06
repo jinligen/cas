@@ -85,39 +85,31 @@ public class QueryDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyAuthenticationFailsToFindUser() throws Exception {
+    public void verifyAuthenticationFailsToFindUser() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL, PASSWORD_FIELD, null,
             null, new HashMap<>(0));
-        assertThrows(AccountNotFoundException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("usernotfound", "psw1"));
-        });
+        assertThrows(AccountNotFoundException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("usernotfound", "psw1")));
     }
 
     @Test
-    public void verifyPasswordInvalid() throws Exception {
+    public void verifyPasswordInvalid() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL, PASSWORD_FIELD,
             null, null, new HashMap<>(0));
-        assertThrows(FailedLoginException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user1", "psw11"));
-        });
+        assertThrows(FailedLoginException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user1", "psw11")));
     }
 
     @Test
-    public void verifyMultipleRecords() throws Exception {
+    public void verifyMultipleRecords() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL, PASSWORD_FIELD,
             null, null, new HashMap<>(0));
-        assertThrows(FailedLoginException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0"));
-        });
+        assertThrows(FailedLoginException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0")));
     }
 
     @Test
-    public void verifyBadQuery() throws Exception {
+    public void verifyBadQuery() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL.replace("*", "error"),
             PASSWORD_FIELD, null, null, new HashMap<>(0));
-        assertThrows(PreventedException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0"));
-        });
+        assertThrows(PreventedException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "psw0")));
     }
 
     @Test
@@ -135,22 +127,18 @@ public class QueryDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyFindUserAndExpired() throws Exception {
+    public void verifyFindUserAndExpired() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL, PASSWORD_FIELD,
             "expired", null, new HashMap<>(0));
-        assertThrows(AccountPasswordMustChangeException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user20", "psw20"));
-        });
+        assertThrows(AccountPasswordMustChangeException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user20", "psw20")));
         throw new AssertionError("Shouldn't get here");
     }
 
     @Test
-    public void verifyFindUserAndDisabled() throws Exception {
+    public void verifyFindUserAndDisabled() {
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, SQL, PASSWORD_FIELD,
             null, "disabled", new HashMap<>(0));
-        assertThrows(AccountDisabledException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user21", "psw21"));
-        });
+        assertThrows(AccountDisabledException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user21", "psw21")));
         throw new AssertionError("Shouldn't get here");
     }
 
@@ -158,18 +146,15 @@ public class QueryDatabaseAuthenticationHandlerTests {
      * This test proves that in case BCRYPT is used authentication using encoded password always fail
      * with FailedLoginException
      *
-     * @throws Exception in case encoding fails
      */
     @Test
-    public void verifyBCryptFail() throws Exception {
+    public void verifyBCryptFail() {
         val encoder = new BCryptPasswordEncoder(8, RandomUtils.getNativeInstance());
         val sql = SQL.replace("*", '\'' + encoder.encode("pswbc1") + "' password");
         val q = new QueryDatabaseAuthenticationHandler("", null, null, null, this.dataSource, sql, PASSWORD_FIELD,
             null, null, new HashMap<>(0));
         q.setPasswordEncoder(encoder);
-        assertThrows(FailedLoginException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "pswbc1"));
-        });
+        assertThrows(FailedLoginException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "pswbc1")));
     }
 
     /**

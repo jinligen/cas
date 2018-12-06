@@ -87,13 +87,11 @@ public class InitialFlowSetupActionSsoTests {
     private Action action;
 
     @Test
-    public void disableFlowIfNoService() throws Exception {
+    public void disableFlowIfNoService() {
         val context = new MockRequestContext();
         val request = new MockHttpServletRequest();
         context.setExternalContext(new ServletExternalContext(new MockServletContext(), request, new MockHttpServletResponse()));
-        assertThrows(NoSuchFlowExecutionException.class, () -> {
-            this.action.execute(context);
-        });
+        assertThrows(NoSuchFlowExecutionException.class, () -> this.action.execute(context));
     }
 
     @TestConfiguration

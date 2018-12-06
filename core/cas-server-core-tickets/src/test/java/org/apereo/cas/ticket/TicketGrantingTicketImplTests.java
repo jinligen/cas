@@ -64,15 +64,14 @@ public class TicketGrantingTicketImplTests {
             CoreAuthenticationTestUtils.getAuthentication(), new NeverExpiresExpirationPolicy());
 
         assertNotNull(t);
-        assertFalse(t.equals(new Object()));
-        assertTrue(t.equals(t));
+        assertNotEquals(t, new Object());
+        assertEquals(t, t);
     }
 
     @Test
     public void verifyNullAuthentication() {
-        assertThrows(Exception.class, () -> {
-            new TicketGrantingTicketImpl(TGT_ID, null, null, null, new NeverExpiresExpirationPolicy());
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new TicketGrantingTicketImpl(TGT_ID, null, null, null, new NeverExpiresExpirationPolicy()));
     }
 
     @Test

@@ -59,9 +59,7 @@ public class OAuth20UsernamePasswordAuthenticatorTests extends BaseOAuth20Authen
         request.addParameter(OAuth20Constants.CLIENT_ID, "client");
         request.addParameter(OAuth20Constants.CLIENT_SECRET, "secretnotfound");
         val ctx = new J2EContext(request, new MockHttpServletResponse());
-        assertThrows(CredentialsException.class, () -> {
-            authenticator.validate(credentials, ctx);
-        });
+        assertThrows(CredentialsException.class, () -> authenticator.validate(credentials, ctx));
     }
 
     @Test
@@ -71,9 +69,7 @@ public class OAuth20UsernamePasswordAuthenticatorTests extends BaseOAuth20Authen
         request.addParameter(OAuth20Constants.CLIENT_ID, "client");
         service.setAccessStrategy(new DefaultRegisteredServiceAccessStrategy(false, false));
         val ctx = new J2EContext(request, new MockHttpServletResponse());
-        assertThrows(CredentialsException.class, () -> {
-            authenticator.validate(credentials, ctx);
-        });
+        assertThrows(CredentialsException.class, () -> authenticator.validate(credentials, ctx));
     }
 
     @Test
@@ -82,9 +78,7 @@ public class OAuth20UsernamePasswordAuthenticatorTests extends BaseOAuth20Authen
         val request = new MockHttpServletRequest();
         request.addParameter(OAuth20Constants.CLIENT_ID, "client");
         val ctx = new J2EContext(request, new MockHttpServletResponse());
-        assertThrows(CredentialsException.class, () -> {
-            authenticator.validate(credentials, ctx);
-        });
+        assertThrows(CredentialsException.class, () -> authenticator.validate(credentials, ctx));
     }
 
     @Test
@@ -92,9 +86,7 @@ public class OAuth20UsernamePasswordAuthenticatorTests extends BaseOAuth20Authen
         val credentials = new UsernamePasswordCredentials("casuser", "casuser");
         val request = new MockHttpServletRequest();
         val ctx = new J2EContext(request, new MockHttpServletResponse());
-        assertThrows(CredentialsException.class, () -> {
-            authenticator.validate(credentials, ctx);
-        });
+        assertThrows(CredentialsException.class, () -> authenticator.validate(credentials, ctx));
     }
 
     @Test

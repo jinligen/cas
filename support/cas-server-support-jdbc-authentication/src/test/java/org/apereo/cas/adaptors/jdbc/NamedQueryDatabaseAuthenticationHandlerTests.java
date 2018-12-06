@@ -99,16 +99,14 @@ public class NamedQueryDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyFailsWithMissingTotalField() throws Exception {
+    public void verifyFailsWithMissingTotalField() {
         val sql = "SELECT count(*) FROM casusers where username=:username AND password=:password";
         val q = new QueryDatabaseAuthenticationHandler("namedHandler",
             null, PrincipalFactoryUtils.newPrincipalFactory(), 0,
             this.dataSource, sql, null,
             null, null,
             new LinkedHashMap<>());
-        assertThrows(FailedLoginException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("whatever", "psw0"));
-        });
+        assertThrows(FailedLoginException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("whatever", "psw0")));
     }
 
     @Entity(name = "casusers")

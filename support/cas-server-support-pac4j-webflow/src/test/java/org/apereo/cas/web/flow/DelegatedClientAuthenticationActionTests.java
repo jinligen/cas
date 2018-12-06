@@ -180,7 +180,7 @@ public class DelegatedClientAuthenticationActionTests {
     }
 
     @Test
-    public void verifyFinishAuthenticationAuthzFailure() throws Exception {
+    public void verifyFinishAuthenticationAuthzFailure() {
         val mockRequest = new MockHttpServletRequest();
         mockRequest.setParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, "FacebookClient");
         val service = CoreAuthenticationTestUtils.getService(MY_SERVICE);
@@ -205,9 +205,7 @@ public class DelegatedClientAuthenticationActionTests {
         val strategy = new DefaultRegisteredServiceAccessStrategy();
         strategy.setEnabled(false);
 
-        assertThrows(UnauthorizedServiceException.class, () -> {
-            getDelegatedClientAction(facebookClient, service, clients, mockRequest, strategy).execute(mockRequestContext);
-        });
+        assertThrows(UnauthorizedServiceException.class, () -> getDelegatedClientAction(facebookClient, service, clients, mockRequest, strategy).execute(mockRequestContext));
     }
 
     @Test

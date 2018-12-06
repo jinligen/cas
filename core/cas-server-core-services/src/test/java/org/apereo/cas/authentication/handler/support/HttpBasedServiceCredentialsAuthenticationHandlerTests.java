@@ -42,10 +42,9 @@ public class HttpBasedServiceCredentialsAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyRejectsInProperCertificateCredentials() throws Exception {
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://clearinghouse.ja-sig.org"));
-        });
+    public void verifyRejectsInProperCertificateCredentials() {
+        assertThrows(FailedLoginException.class,
+            () -> this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://clearinghouse.ja-sig.org")));
     }
 
     @Test
@@ -54,20 +53,18 @@ public class HttpBasedServiceCredentialsAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyNoAcceptableStatusCode() throws Exception {
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://clue.acs.rutgers.edu"));
-        });
+    public void verifyNoAcceptableStatusCode() {
+        assertThrows(FailedLoginException.class,
+            () -> this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://clue.acs.rutgers.edu")));
     }
 
     @Test
-    public void verifyNoAcceptableStatusCodeButOneSet() throws Exception {
+    public void verifyNoAcceptableStatusCodeButOneSet() {
         val clientFactory = new SimpleHttpClientFactoryBean();
         clientFactory.setAcceptableCodes(CollectionUtils.wrapList(900));
         val httpClient = clientFactory.getObject();
         this.authenticationHandler = new HttpBasedServiceCredentialsAuthenticationHandler("", null, null, null, httpClient);
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://www.ja-sig.org"));
-        });
+        assertThrows(FailedLoginException.class,
+            () -> this.authenticationHandler.authenticate(RegisteredServiceTestUtils.getHttpBasedServiceCredentials("https://www.ja-sig.org")));
     }
 }

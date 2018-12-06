@@ -83,9 +83,7 @@ public class MultifactorAuthenticationTests extends BaseCasWebflowMultifactorAut
         val ctx = processAuthenticationAttempt(HIGH_SERVICE, newUserPassCredentials(ALICE, ALICE));
         val tgt = cas.createTicketGrantingTicket(ctx);
         assertNotNull(tgt);
-        assertThrows(UnsatisfiedAuthenticationPolicyException.class, () -> {
-            cas.grantServiceTicket(tgt.getId(), HIGH_SERVICE, ctx);
-        });
+        assertThrows(UnsatisfiedAuthenticationPolicyException.class, () -> cas.grantServiceTicket(tgt.getId(), HIGH_SERVICE, ctx));
     }
 
     @Test

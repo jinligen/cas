@@ -35,6 +35,7 @@ import javax.security.auth.login.FailedLoginException;
 import java.security.GeneralSecurityException;
 import java.util.LinkedHashSet;
 
+import static org.apereo.cas.util.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
@@ -76,7 +77,7 @@ public class RestfulAuthenticationPolicyTests {
     }
 
     @Test
-    public void verifyPolicyGood() throws Exception {
+    public void verifyPolicyGood() {
         val restTemplate = new RestTemplate();
         val mockServer = newServer(restTemplate);
         val policy = newPolicy(restTemplate);
@@ -85,7 +86,11 @@ public class RestfulAuthenticationPolicyTests {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(method(HttpMethod.POST))
             .andRespond(withSuccess());
-        assertTrue(policy.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication("casuser"), new LinkedHashSet<>()));
+
+        //noinspection CodeBlock2Expr
+        assertDoesNotThrow(() -> {
+            assertTrue(policy.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication("casuser"), new LinkedHashSet<>()));
+        });
         mockServer.verify();
     }
 
@@ -114,10 +119,9 @@ public class RestfulAuthenticationPolicyTests {
             .andExpect(method(HttpMethod.POST))
             .andRespond(withStatus(status));
 
-        val exception = assertThrows(GeneralSecurityException.class, () -> {
-            assertTrue(policy.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication("casuser"), new LinkedHashSet<>()));
-        });
-        softly.assertThat(exception).as(status.getReasonPhrase()).hasRootCauseInstanceOf(exceptionClass);
+        assertThrowsWithRootCause(GeneralSecurityException.class, exceptionClass,
+            () -> assertTrue(policy.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication("casuser"), new LinkedHashSet<>())));
+
         mockServer.verify();
 
     }

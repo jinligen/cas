@@ -42,16 +42,17 @@ public class SimpleTestUsernamePasswordHandlerTests {
     }
 
     @Test
-    public void verifyValidUsernamePassword() throws Exception {
-        val result =
-            authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        assertEquals("SimpleTestUsernamePasswordAuthenticationHandler", result.getHandlerName());
+    public void verifyValidUsernamePassword() {
+        assertDoesNotThrow(() -> {
+            val result =
+                authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
+            assertEquals("SimpleTestUsernamePasswordAuthenticationHandler", result.getHandlerName());
+        });
     }
 
     @Test
-    public void verifyInvalidUsernamePassword() throws Exception {
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword());
-        });
+    public void verifyInvalidUsernamePassword() {
+        assertThrows(FailedLoginException.class,
+            () -> this.authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword()));
     }
 }

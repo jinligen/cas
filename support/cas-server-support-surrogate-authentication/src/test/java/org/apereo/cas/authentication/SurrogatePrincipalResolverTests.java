@@ -38,9 +38,7 @@ public class SurrogatePrincipalResolverTests {
     public void verifyResolverSurrogateWithoutPrincipal() {
         val resolver = new SurrogatePrincipalResolver(CoreAuthenticationTestUtils.getAttributeRepository(), "cn");
         val credential = new SurrogateUsernamePasswordCredential();
-        assertThrows(IllegalArgumentException.class, () -> {
-            resolver.resolve(credential);
-        });
+        assertThrows(IllegalArgumentException.class, () -> resolver.resolve(credential));
     }
 
     @Test

@@ -33,12 +33,16 @@ public class RejectUsersAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifySupportsProperUserCredentials() throws Exception {
+    public void verifySupportsProperUserCredentials() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername("fff");
         c.setPassword("rutgers");
-        assertNotNull(this.authenticationHandler.authenticate(c));
+
+        //noinspection CodeBlock2Expr
+        assertDoesNotThrow(() -> {
+            assertNotNull(this.authenticationHandler.authenticate(c));
+        });
     }
 
     @Test
@@ -53,43 +57,40 @@ public class RejectUsersAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyFailsUserInMap() throws Exception {
+    public void verifyFailsUserInMap() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername("scott");
         c.setPassword("rutgers");
 
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(FailedLoginException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyPassesUserNotInMap() throws Exception {
+    public void verifyPassesUserNotInMap() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername("fds");
         c.setPassword("rutgers");
 
-        assertNotNull(this.authenticationHandler.authenticate(c));
+        //noinspection CodeBlock2Expr
+        assertDoesNotThrow(() -> {
+            assertNotNull(this.authenticationHandler.authenticate(c));
+        });
     }
 
     @Test
-    public void verifyPassesNullUserName() throws Exception {
+    public void verifyPassesNullUserName() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername(null);
         c.setPassword("user");
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyPassesNullUserNameAndPassword() throws Exception {
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(new UsernamePasswordCredential());
-        });
+    public void verifyPassesNullUserNameAndPassword() {
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(new UsernamePasswordCredential()));
     }
 }

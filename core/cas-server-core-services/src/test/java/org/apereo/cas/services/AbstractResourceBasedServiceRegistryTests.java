@@ -43,9 +43,7 @@ public abstract class AbstractResourceBasedServiceRegistryTests extends Abstract
     public void verifyServiceWithInvalidFileName(final Class<? extends RegisteredService> registeredServiceClass) {
         val r = buildRegisteredServiceInstance(RandomUtils.nextInt(), registeredServiceClass);
         r.setName("hell/o@world:*");
-        assertThrows(IllegalArgumentException.class, () -> {
-            this.dao.save(r);
-        });
+        assertThrows(IllegalArgumentException.class, () -> this.dao.save(r));
     }
 
     @Override

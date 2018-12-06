@@ -38,8 +38,6 @@ public class DelegatedAuthenticationServiceTicketValidationAuthorizerTests {
 
         val az = new DelegatedAuthenticationServiceTicketValidationAuthorizer(servicesManager,
             new RegisteredServiceDelegatedAuthenticationPolicyAuditableEnforcer());
-        assertThrows(UnauthorizedServiceException.class, () -> {
-            az.authorize(new MockHttpServletRequest(), CoreAuthenticationTestUtils.getService(), assertion);
-        });
+        assertThrows(UnauthorizedServiceException.class, () -> az.authorize(new MockHttpServletRequest(), CoreAuthenticationTestUtils.getService(), assertion));
     }
 }

@@ -69,45 +69,37 @@ public class FileAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyFailsUserNotInFileWithDefaultSeparator() throws Exception {
+    public void verifyFailsUserNotInFileWithDefaultSeparator() {
         val c = new UsernamePasswordCredential();
 
         c.setUsername("fds");
         c.setPassword("rutgers");
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullUserName() throws Exception {
+    public void verifyFailsNullUserName() {
         val c = new UsernamePasswordCredential();
         c.setUsername(null);
         c.setPassword("user");
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullUserNameAndPassword() throws Exception {
+    public void verifyFailsNullUserNameAndPassword() {
         val c = new UsernamePasswordCredential();
         c.setUsername(null);
         c.setPassword(null);
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsNullPassword() throws Exception {
+    public void verifyFailsNullPassword() {
         val c = new UsernamePasswordCredential();
         c.setUsername("scott");
         c.setPassword(null);
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(FailedLoginException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
@@ -120,40 +112,34 @@ public class FileAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyFailsUserNotInFileWithCommaSeparator() throws Exception {
+    public void verifyFailsUserNotInFileWithCommaSeparator() {
         val c = new UsernamePasswordCredential();
 
         this.authenticationHandler = new FileAuthenticationHandler("", null, null, new ClassPathResource("authentication2.txt"), ",");
         c.setUsername("fds");
         c.setPassword("rutgers");
-        assertThrows(AccountNotFoundException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyFailsGoodUsernameBadPassword() throws Exception {
+    public void verifyFailsGoodUsernameBadPassword() {
         val c = new UsernamePasswordCredential();
         this.authenticationHandler = new FileAuthenticationHandler("", null, null, new ClassPathResource("authentication2.txt"), ",");
 
         c.setUsername("scott");
         c.setPassword("rutgers1");
 
-        assertThrows(FailedLoginException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(FailedLoginException.class, () -> this.authenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyAuthenticateNoFileName() throws Exception {
+    public void verifyAuthenticateNoFileName() {
         val c = new UsernamePasswordCredential();
         this.authenticationHandler = new FileAuthenticationHandler("", null, null, new ClassPathResource("fff"), FileAuthenticationHandler.DEFAULT_SEPARATOR);
 
         c.setUsername("scott");
         c.setPassword("rutgers");
 
-        assertThrows(PreventedException.class, () -> {
-            this.authenticationHandler.authenticate(c);
-        });
+        assertThrows(PreventedException.class, () -> this.authenticationHandler.authenticate(c));
     }
 }

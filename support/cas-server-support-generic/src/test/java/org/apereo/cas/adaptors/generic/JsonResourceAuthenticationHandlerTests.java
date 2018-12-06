@@ -113,42 +113,32 @@ public class JsonResourceAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyNotFoundAccount() throws Exception {
+    public void verifyNotFoundAccount() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("nobody", "Mellon");
-        assertThrows(AccountNotFoundException.class, () -> {
-            handler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> handler.authenticate(c));
     }
 
     @Test
-    public void verifyExpiredAccount() throws Exception {
+    public void verifyExpiredAccount() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casexpired", "Mellon");
-        assertThrows(AccountExpiredException.class, () -> {
-            handler.authenticate(c);
-        });
+        assertThrows(AccountExpiredException.class, () -> handler.authenticate(c));
     }
 
     @Test
-    public void verifyDisabledAccount() throws Exception {
+    public void verifyDisabledAccount() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casdisabled", "Mellon");
-        assertThrows(AccountDisabledException.class, () -> {
-            handler.authenticate(c);
-        });
+        assertThrows(AccountDisabledException.class, () -> handler.authenticate(c));
     }
 
     @Test
-    public void verifyLockedAccount() throws Exception {
+    public void verifyLockedAccount() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("caslocked", "Mellon");
-        assertThrows(AccountLockedException.class, () -> {
-            handler.authenticate(c);
-        });
+        assertThrows(AccountLockedException.class, () -> handler.authenticate(c));
     }
 
     @Test
-    public void verifyMustChangePswAccount() throws Exception {
+    public void verifyMustChangePswAccount() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casmustchange", "Mellon");
-        assertThrows(AccountPasswordMustChangeException.class, () -> {
-            handler.authenticate(c);
-        });
+        assertThrows(AccountPasswordMustChangeException.class, () -> handler.authenticate(c));
     }
 }

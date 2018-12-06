@@ -96,8 +96,6 @@ public class SecurityTokenServiceAuthenticationMetaDataPopulatorTests {
             + WSFederationConstants.WTREALM + '=' + realm);
         val transaction = DefaultAuthenticationTransaction.of(service, CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
 
-        assertThrows(AuthenticationException.class, () -> {
-            populator.populateAttributes(builder, transaction);
-        });
+        assertThrows(AuthenticationException.class, () -> populator.populateAttributes(builder, transaction));
     }
 }

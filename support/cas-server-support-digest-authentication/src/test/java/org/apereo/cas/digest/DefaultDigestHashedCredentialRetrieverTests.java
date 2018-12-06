@@ -26,13 +26,11 @@ public class DefaultDigestHashedCredentialRetrieverTests {
     }
 
     @Test
-    public void verifyAnExceptionIsThrownIfUsedDoesNotExist() throws Exception {
+    public void verifyAnExceptionIsThrownIfUsedDoesNotExist() {
         val username = "user";
         val credentialRetriever = new DefaultDigestHashedCredentialRetriever(
             Collections.singletonMap("anotherUsername", "password"));
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            credentialRetriever.findCredential(username, "ignored");
-        });
+        assertThrows(AccountNotFoundException.class, () -> credentialRetriever.findCredential(username, "ignored"));
     }
 }

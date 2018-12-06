@@ -18,33 +18,27 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BlockingRadiusServerTests extends AbstractRadiusServerTests {
 
     @Test
-    public void verifyBadSecret() throws Exception {
+    public void verifyBadSecret() {
         val server = new BlockingRadiusServer(RadiusProtocol.MSCHAPv2,
             new RadiusClientFactory(ACCOUNTING_PORT, AUTHENTICATION_PORT, 1,
                 INET_ADDRESS, "xyz"));
-        assertThrows(TimeoutException.class, () -> {
-            server.authenticate("xyz", "xyz");
-        });
+        assertThrows(TimeoutException.class, () -> server.authenticate("xyz", "xyz"));
     }
 
     @Test
-    public void verifyBadPorts() throws Exception {
+    public void verifyBadPorts() {
         val server = new BlockingRadiusServer(RadiusProtocol.MSCHAPv2,
             new RadiusClientFactory(1234, 4567, 1,
                 INET_ADDRESS, "xyz"));
-        assertThrows(TimeoutException.class, () -> {
-            server.authenticate("xyz", "xyz");
-        });
+        assertThrows(TimeoutException.class, () -> server.authenticate("xyz", "xyz"));
     }
 
     @Test
-    public void verifyBadAddress() throws Exception {
+    public void verifyBadAddress() {
         val server = new BlockingRadiusServer(RadiusProtocol.MSCHAPv2,
             new RadiusClientFactory(1234, 4567, 1,
                 "131.211.138.166", "1234"));
-        assertThrows(TimeoutException.class, () -> {
-            server.authenticate("xyz", "xyz");
-        });
+        assertThrows(TimeoutException.class, () -> server.authenticate("xyz", "xyz"));
     }
 
     @Override

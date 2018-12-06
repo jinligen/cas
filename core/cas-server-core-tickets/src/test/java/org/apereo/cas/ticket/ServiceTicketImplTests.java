@@ -55,16 +55,12 @@ public class ServiceTicketImplTests {
 
     @Test
     public void verifyNoService() {
-        assertThrows(Exception.class, () -> {
-            new ServiceTicketImpl(ST_ID, tgt, null, false, new NeverExpiresExpirationPolicy());
-        });
+        assertThrows(Exception.class, () -> new ServiceTicketImpl(ST_ID, tgt, null, false, new NeverExpiresExpirationPolicy()));
     }
 
     @Test
     public void verifyNoTicket() {
-        assertThrows(NullPointerException.class, () -> {
-            new ServiceTicketImpl(ST_ID, null, CoreAuthenticationTestUtils.getService(), false, new NeverExpiresExpirationPolicy());
-        });
+        assertThrows(NullPointerException.class, () -> new ServiceTicketImpl(ST_ID, null, CoreAuthenticationTestUtils.getService(), false, new NeverExpiresExpirationPolicy()));
     }
 
     @Test
@@ -135,8 +131,6 @@ public class ServiceTicketImplTests {
             new MultiTimeUseOrTimeoutExpirationPolicy(1, 5000), false, true);
         s.grantProxyGrantingTicket(idGenerator.getNewTicketId(TicketGrantingTicket.PREFIX), a, new NeverExpiresExpirationPolicy());
 
-        assertThrows(Exception.class, () -> {
-            s.grantProxyGrantingTicket(idGenerator.getNewTicketId(TicketGrantingTicket.PREFIX), a, new NeverExpiresExpirationPolicy());
-        });
+        assertThrows(Exception.class, () -> s.grantProxyGrantingTicket(idGenerator.getNewTicketId(TicketGrantingTicket.PREFIX), a, new NeverExpiresExpirationPolicy()));
     }
 }

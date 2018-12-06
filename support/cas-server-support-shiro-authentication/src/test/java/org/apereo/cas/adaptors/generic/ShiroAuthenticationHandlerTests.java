@@ -48,7 +48,7 @@ public class ShiroAuthenticationHandlerTests {
     }
 
     @Test
-    public void checkAuthenticationSuccessfulMissingRole() throws Exception {
+    public void checkAuthenticationSuccessfulMissingRole() {
         val shiro = new ShiroAuthenticationHandler("", null, null, Collections.singleton("student"), new HashSet<>(0));
         shiro.loadShiroConfiguration(new ClassPathResource("shiro.ini"));
 
@@ -57,13 +57,11 @@ public class ShiroAuthenticationHandlerTests {
         creds.setUsername("casuser");
         creds.setPassword("Mellon");
 
-        assertThrows(FailedLoginException.class, () -> {
-            shiro.authenticate(creds);
-        });
+        assertThrows(FailedLoginException.class, () -> shiro.authenticate(creds));
     }
 
     @Test
-    public void checkAuthenticationSuccessfulMissingPermission() throws Exception {
+    public void checkAuthenticationSuccessfulMissingPermission() {
         val shiro = new ShiroAuthenticationHandler("", null, null, new HashSet<>(0), Collections.singleton("dosomething"));
         shiro.loadShiroConfiguration(new ClassPathResource("shiro.ini"));
 
@@ -72,8 +70,6 @@ public class ShiroAuthenticationHandlerTests {
         creds.setUsername("casuser");
         creds.setPassword("Mellon");
 
-        assertThrows(FailedLoginException.class, () -> {
-            shiro.authenticate(creds);
-        });
+        assertThrows(FailedLoginException.class, () -> shiro.authenticate(creds));
     }
 }

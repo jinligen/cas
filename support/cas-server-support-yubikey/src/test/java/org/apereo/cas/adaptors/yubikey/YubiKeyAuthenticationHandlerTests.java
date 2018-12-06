@@ -49,25 +49,21 @@ public class YubiKeyAuthenticationHandlerTests {
     }
 
     @Test
-    public void checkReplayedAuthn() throws Exception {
+    public void checkReplayedAuthn() {
         val handler = new YubiKeyAuthenticationHandler(YubicoClient.getClient(CLIENT_ID, SECRET_KEY));
 
-        assertThrows(FailedLoginException.class, () -> {
-            handler.authenticate(new YubiKeyCredential(OTP));
-        });
+        assertThrows(FailedLoginException.class, () -> handler.authenticate(new YubiKeyCredential(OTP)));
     }
 
     @Test
-    public void checkBadConfigAuthn() throws Exception {
+    public void checkBadConfigAuthn() {
         val handler = new YubiKeyAuthenticationHandler(YubicoClient.getClient(123456, "123456"));
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            handler.authenticate(new YubiKeyCredential("casuser"));
-        });
+        assertThrows(AccountNotFoundException.class, () -> handler.authenticate(new YubiKeyCredential("casuser")));
     }
 
     @Test
-    public void checkAccountNotFound() throws Exception {
+    public void checkAccountNotFound() {
         val registry = new WhitelistYubiKeyAccountRegistry(new HashMap<>(),
             new DefaultYubiKeyAccountValidator(YubicoClient.getClient(CLIENT_ID, SECRET_KEY)));
         registry.setCipherExecutor(CipherExecutor.noOpOfSerializableToString());
@@ -75,9 +71,7 @@ public class YubiKeyAuthenticationHandlerTests {
             null, new DefaultPrincipalFactory(),
             YubicoClient.getClient(CLIENT_ID, SECRET_KEY),
             registry, null);
-        assertThrows(AccountNotFoundException.class, () -> {
-            handler.authenticate(new YubiKeyCredential(OTP));
-        });
+        assertThrows(AccountNotFoundException.class, () -> handler.authenticate(new YubiKeyCredential(OTP)));
     }
 
     @Test

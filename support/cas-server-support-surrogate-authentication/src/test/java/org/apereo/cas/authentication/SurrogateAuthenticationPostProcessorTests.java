@@ -62,9 +62,7 @@ public class SurrogateAuthenticationPostProcessorTests {
         val transaction = DefaultAuthenticationTransaction.of(RegisteredServiceTestUtils.getService("service"), c);
         val builder = mock(AuthenticationBuilder.class);
         when(builder.build()).thenReturn(CoreAuthenticationTestUtils.getAuthentication("casuser"));
-        assertThrows(AuthenticationException.class, () -> {
-            surrogateAuthenticationPostProcessor.process(builder, transaction);
-        });
+        assertThrows(AuthenticationException.class, () -> surrogateAuthenticationPostProcessor.process(builder, transaction));
     }
 
     @Test

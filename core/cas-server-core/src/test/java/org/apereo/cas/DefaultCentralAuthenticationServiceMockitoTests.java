@@ -219,37 +219,28 @@ public class DefaultCentralAuthenticationServiceMockitoTests extends BaseCasCore
 
     @Test
     public void verifyNonExistentServiceWhenDelegatingTicketGrantingTicket() {
-        assertThrows(InvalidTicketException.class, () -> {
-            this.cas.createProxyGrantingTicket("bad-st", getAuthenticationContext());
-        });
+        assertThrows(InvalidTicketException.class, () -> this.cas.createProxyGrantingTicket("bad-st", getAuthenticationContext()));
     }
 
     @Test
     public void verifyInvalidServiceWhenDelegatingTicketGrantingTicket() {
-        assertThrows(UnauthorizedServiceException.class, () -> {
-            this.cas.createProxyGrantingTicket(ST_ID, getAuthenticationContext());
-        });
+        assertThrows(UnauthorizedServiceException.class, () -> this.cas.createProxyGrantingTicket(ST_ID, getAuthenticationContext()));
     }
 
     @Test
     public void disallowVendingServiceTicketsWhenServiceIsNotAllowedToProxyCAS1019() {
-        assertThrows(UnauthorizedProxyingException.class, () -> {
-            this.cas.grantServiceTicket(TGT_ID, RegisteredServiceTestUtils.getService(SVC1_ID), getAuthenticationContext());
-        });
+        assertThrows(UnauthorizedProxyingException.class,
+            () -> this.cas.grantServiceTicket(TGT_ID, RegisteredServiceTestUtils.getService(SVC1_ID), getAuthenticationContext()));
     }
 
     @Test
-    public void getTicketGrantingTicketIfTicketIdIsNull() throws InvalidTicketException {
-        assertThrows(NullPointerException.class, () -> {
-            this.cas.getTicket(null, TicketGrantingTicket.class);
-        });
+    public void getTicketGrantingTicketIfTicketIdIsNull() {
+        assertThrows(NullPointerException.class, () -> this.cas.getTicket(null, TicketGrantingTicket.class));
     }
 
     @Test
-    public void getTicketGrantingTicketIfTicketIdIsMissing() throws InvalidTicketException {
-        assertThrows(InvalidTicketException.class, () -> {
-            this.cas.getTicket("TGT-9000", TicketGrantingTicket.class);
-        });
+    public void getTicketGrantingTicketIfTicketIdIsMissing() {
+        assertThrows(InvalidTicketException.class, () -> this.cas.getTicket("TGT-9000", TicketGrantingTicket.class));
     }
 
     @Test

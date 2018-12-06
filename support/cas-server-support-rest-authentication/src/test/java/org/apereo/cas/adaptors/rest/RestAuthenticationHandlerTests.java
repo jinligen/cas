@@ -117,27 +117,21 @@ public class RestAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyDisabledAccount() throws Exception {
+    public void verifyDisabledAccount() {
         server.andRespond(withStatus(HttpStatus.FORBIDDEN).contentType(MediaType.APPLICATION_JSON));
-        assertThrows(AccountDisabledException.class, () -> {
-            authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        });
+        assertThrows(AccountDisabledException.class, () -> authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
     }
 
     @Test
-    public void verifyUnauthorized() throws Exception {
+    public void verifyUnauthorized() {
         server.andRespond(withStatus(HttpStatus.UNAUTHORIZED));
-        assertThrows(FailedLoginException.class, () -> {
-            authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        });
+        assertThrows(FailedLoginException.class, () -> authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
     }
 
     @Test
-    public void verifyNotFound() throws Exception {
+    public void verifyNotFound() {
         server.andRespond(withStatus(HttpStatus.NOT_FOUND));
-        assertThrows(AccountNotFoundException.class, () -> {
-            authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        });
+        assertThrows(AccountNotFoundException.class, () -> authenticationHandler.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
     }
 }
 

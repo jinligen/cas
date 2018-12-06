@@ -57,26 +57,24 @@ public class DefaultCassandraRepositoryTests {
     private AuthenticationHandler cassandraAuthenticationHandler;
 
     @Test
-    public void verifyUserNotFound() throws Exception {
+    public void verifyUserNotFound() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("baduser", "Mellon");
-        assertThrows(AccountNotFoundException.class, () -> {
-            cassandraAuthenticationHandler.authenticate(c);
-        });
+        assertThrows(AccountNotFoundException.class, () -> cassandraAuthenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyUserBadPassword() throws Exception {
+    public void verifyUserBadPassword() {
         val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casuser", "bad");
-        assertThrows(FailedLoginException.class, () -> {
-            cassandraAuthenticationHandler.authenticate(c);
-        });
+        assertThrows(FailedLoginException.class, () -> cassandraAuthenticationHandler.authenticate(c));
     }
 
     @Test
-    public void verifyUser() throws Exception {
-        val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casuser", "Mellon");
-        val result = cassandraAuthenticationHandler.authenticate(c);
-        assertNotNull(result);
-        assertEquals("casuser", result.getPrincipal().getId());
+    public void verifyUser() {
+        assertDoesNotThrow(() -> {
+            val c = CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("casuser", "Mellon");
+            val result = cassandraAuthenticationHandler.authenticate(c);
+            assertNotNull(result);
+            assertEquals("casuser", result.getPrincipal().getId());
+        });
     }
 }

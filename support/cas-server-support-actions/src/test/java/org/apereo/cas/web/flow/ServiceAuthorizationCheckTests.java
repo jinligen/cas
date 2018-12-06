@@ -73,9 +73,7 @@ public class ServiceAuthorizationCheckTests {
         val mockRequestContext = new MockRequestContext();
         WebUtils.putServiceIntoFlowScope(mockRequestContext, unauthorizedService);
 
-        assertThrows(UnauthorizedServiceException.class, () -> {
-            this.serviceAuthorizationCheck.doExecute(mockRequestContext);
-        });
+        assertThrows(UnauthorizedServiceException.class, () -> this.serviceAuthorizationCheck.doExecute(mockRequestContext));
     }
 
     @Test
@@ -83,8 +81,6 @@ public class ServiceAuthorizationCheckTests {
         val mockRequestContext = new MockRequestContext();
         WebUtils.putServiceIntoFlowScope(mockRequestContext, undefinedService);
 
-        assertThrows(UnauthorizedServiceException.class, () -> {
-            this.serviceAuthorizationCheck.doExecute(mockRequestContext);
-        });
+        assertThrows(UnauthorizedServiceException.class, () -> this.serviceAuthorizationCheck.doExecute(mockRequestContext));
     }
 }

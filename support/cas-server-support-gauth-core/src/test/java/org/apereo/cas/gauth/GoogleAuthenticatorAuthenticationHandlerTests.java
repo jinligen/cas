@@ -78,22 +78,18 @@ public class GoogleAuthenticatorAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyAuthnAccountNotFound() throws Exception {
+    public void verifyAuthnAccountNotFound() {
         val credential = getGoogleAuthenticatorTokenCredential();
-        assertThrows(AccountNotFoundException.class, () -> {
-            handler.authenticate(credential);
-        });
+        assertThrows(AccountNotFoundException.class, () -> handler.authenticate(credential));
     }
 
     @Test
-    public void verifyAuthnFailsTokenNotFound() throws Exception {
+    public void verifyAuthnFailsTokenNotFound() {
         val credential = getGoogleAuthenticatorTokenCredential();
         handler.getTokenRepository().store(new OneTimeToken(Integer.valueOf(credential.getToken()), "casuser"));
         handler.getCredentialRepository().save("casuser", googleAuthenticatorAccount.getKey(),
             googleAuthenticatorAccount.getVerificationCode(), googleAuthenticatorAccount.getScratchCodes());
-        assertThrows(AccountExpiredException.class, () -> {
-            handler.authenticate(credential);
-        });
+        assertThrows(AccountExpiredException.class, () -> handler.authenticate(credential));
     }
 
     @Test

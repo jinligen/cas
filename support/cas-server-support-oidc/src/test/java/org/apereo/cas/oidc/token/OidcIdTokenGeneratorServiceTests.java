@@ -61,10 +61,8 @@ public class OidcIdTokenGeneratorServiceTests extends AbstractOidcTests {
         val request = new MockHttpServletRequest();
         val response = new MockHttpServletResponse();
         val accessToken = mock(AccessToken.class);
-        assertThrows(IllegalArgumentException.class, () -> {
-            oidcIdTokenGenerator.generate(request, response, accessToken, 30,
-                OAuth20ResponseTypes.CODE,
-                OAuth20Utils.getRegisteredOAuthServiceByClientId(this.servicesManager, "clientid"));
-        });
+        assertThrows(IllegalArgumentException.class, () -> oidcIdTokenGenerator.generate(request, response, accessToken, 30,
+            OAuth20ResponseTypes.CODE,
+            OAuth20Utils.getRegisteredOAuthServiceByClientId(this.servicesManager, "clientid")));
     }
 }

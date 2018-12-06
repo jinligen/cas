@@ -107,33 +107,27 @@ public class QueryAndEncodeDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyAuthenticationFailsToFindUser() throws Exception {
+    public void verifyAuthenticationFailsToFindUser() {
         val q = new QueryAndEncodeDatabaseAuthenticationHandler("", null, null, null, dataSource, ALG_NAME,
             buildSql(), PASSWORD_FIELD_NAME, "salt", null, null, "ops", 0, "");
 
-        assertThrows(AccountNotFoundException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        });
+        assertThrows(AccountNotFoundException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
     }
 
     @Test
-    public void verifyAuthenticationInvalidSql() throws Exception {
+    public void verifyAuthenticationInvalidSql() {
         val q = new QueryAndEncodeDatabaseAuthenticationHandler("", null, null, null, dataSource, ALG_NAME,
             buildSql("makesNoSenseInSql"), PASSWORD_FIELD_NAME, "salt", null, null, "ops", 0, "");
 
-        assertThrows(PreventedException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword());
-        });
+        assertThrows(PreventedException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword()));
     }
 
     @Test
-    public void verifyAuthenticationMultipleAccounts() throws Exception {
+    public void verifyAuthenticationMultipleAccounts() {
         val q = new QueryAndEncodeDatabaseAuthenticationHandler("", null, null, null, dataSource, ALG_NAME,
             buildSql(), PASSWORD_FIELD_NAME, "salt", null, null, "ops", 0, "");
 
-        assertThrows(FailedLoginException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "password0"));
-        });
+        assertThrows(FailedLoginException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithDifferentUsernameAndPassword("user0", "password0")));
     }
 
     @Test
@@ -149,24 +143,20 @@ public class QueryAndEncodeDatabaseAuthenticationHandlerTests {
     }
 
     @Test
-    public void verifyAuthenticationWithExpiredField() throws Exception {
+    public void verifyAuthenticationWithExpiredField() {
         val q = new QueryAndEncodeDatabaseAuthenticationHandler("", null, null, null, dataSource, ALG_NAME,
             buildSql(), PASSWORD_FIELD_NAME, "salt", EXPIRED_FIELD_NAME, null, NUM_ITERATIONS_FIELD_NAME, 0, STATIC_SALT);
 
-        assertThrows(AccountPasswordMustChangeException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword("user20"));
-        });
+        assertThrows(AccountPasswordMustChangeException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword("user20")));
         throw new AssertionError("Shouldn't get here");
     }
 
     @Test
-    public void verifyAuthenticationWithDisabledField() throws Exception {
+    public void verifyAuthenticationWithDisabledField() {
         val q = new QueryAndEncodeDatabaseAuthenticationHandler("", null, null, null, dataSource, ALG_NAME,
             buildSql(), PASSWORD_FIELD_NAME, "salt", null, DISABLED_FIELD_NAME, NUM_ITERATIONS_FIELD_NAME, 0, STATIC_SALT);
 
-        assertThrows(AccountDisabledException.class, () -> {
-            q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword("user21"));
-        });
+        assertThrows(AccountDisabledException.class, () -> q.authenticate(CoreAuthenticationTestUtils.getCredentialsWithSameUsernameAndPassword("user21")));
         throw new AssertionError("Shouldn't get here");
     }
 

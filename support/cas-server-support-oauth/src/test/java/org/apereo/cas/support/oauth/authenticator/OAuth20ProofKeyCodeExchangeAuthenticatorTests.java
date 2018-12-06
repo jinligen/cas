@@ -77,8 +77,6 @@ public class OAuth20ProofKeyCodeExchangeAuthenticatorTests extends BaseOAuth20Au
         ticketRegistry.addTicket(ticket);
         request.addParameter(OAuth20Constants.CODE, ticket.getId());
         val ctx = new J2EContext(request, new MockHttpServletResponse());
-        assertThrows(CredentialsException.class, () -> {
-            authenticator.validate(credentials, ctx);
-        });
+        assertThrows(CredentialsException.class, () -> authenticator.validate(credentials, ctx));
     }
 }
