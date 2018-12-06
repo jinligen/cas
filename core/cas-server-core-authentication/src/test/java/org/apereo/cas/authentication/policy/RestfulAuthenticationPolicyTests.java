@@ -14,7 +14,6 @@ import org.apereo.cas.config.CasDefaultServiceTicketIdGeneratorsConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
 
 import lombok.val;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,6 @@ import java.security.GeneralSecurityException;
 import java.util.LinkedHashSet;
 
 import static org.apereo.cas.util.Assertions.*;
-import static org.assertj.core.api.SoftAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
@@ -96,20 +94,20 @@ public class RestfulAuthenticationPolicyTests {
 
     @Test
     public void verifyPolicyFailsWithStatusCodes() {
-        assertSoftly(softly -> {
-            verifyPolicyFails(softly, FailedLoginException.class, HttpStatus.UNAUTHORIZED);
-            verifyPolicyFails(softly, AccountLockedException.class, HttpStatus.LOCKED);
-            verifyPolicyFails(softly, AccountDisabledException.class, HttpStatus.METHOD_NOT_ALLOWED);
-            verifyPolicyFails(softly, AccountDisabledException.class, HttpStatus.FORBIDDEN);
-            verifyPolicyFails(softly, AccountNotFoundException.class, HttpStatus.NOT_FOUND);
-            verifyPolicyFails(softly, AccountExpiredException.class, HttpStatus.PRECONDITION_FAILED);
-            verifyPolicyFails(softly, AccountPasswordMustChangeException.class, HttpStatus.PRECONDITION_REQUIRED);
-            verifyPolicyFails(softly, FailedLoginException.class, HttpStatus.INTERNAL_SERVER_ERROR);
+        assertAll(()-> {
+            verifyPolicyFails(FailedLoginException.class, HttpStatus.UNAUTHORIZED);
+            verifyPolicyFails(AccountLockedException.class, HttpStatus.LOCKED);
+            verifyPolicyFails(AccountDisabledException.class, HttpStatus.METHOD_NOT_ALLOWED);
+            verifyPolicyFails(AccountDisabledException.class, HttpStatus.FORBIDDEN);
+            verifyPolicyFails(AccountNotFoundException.class, HttpStatus.NOT_FOUND);
+            verifyPolicyFails(AccountExpiredException.class, HttpStatus.PRECONDITION_FAILED);
+            verifyPolicyFails(AccountPasswordMustChangeException.class, HttpStatus.PRECONDITION_REQUIRED);
+            verifyPolicyFails(FailedLoginException.class, HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }
 
 
-    private void verifyPolicyFails(final SoftAssertions softly, final Class<? extends Throwable> exceptionClass, final HttpStatus status) {
+    private void verifyPolicyFails(final Class<? extends Throwable> exceptionClass, final HttpStatus status) {
         val restTemplate = new RestTemplate();
         val mockServer = newServer(restTemplate);
         val policy = newPolicy(restTemplate);
@@ -123,6 +121,5 @@ public class RestfulAuthenticationPolicyTests {
             () -> assertTrue(policy.isSatisfiedBy(CoreAuthenticationTestUtils.getAuthentication("casuser"), new LinkedHashSet<>())));
 
         mockServer.verify();
-
     }
 }
