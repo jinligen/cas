@@ -407,12 +407,6 @@ subprojects {
         testImplementation libraries.groovy
         compileOnly libraries.findbugsannotations
     }
-
-    if (project.name != 'cas-server-core-api-test-category') {
-        dependencies {
-            testImplementation project(path: ":api:cas-server-core-api-test-category", configuration: "tests")
-        }
-    }
 }
 
 wrapper {

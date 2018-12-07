@@ -253,10 +253,6 @@ def hasTestsOfCategory(Project project, String category) {
                             if (m) {
                                 tags.addAll(m.collect { it[1] })
                             }
-                            m = line =~ /^\s*@Category\((\w+)Category\.class\)\s*$/
-                            if (m) {
-                                tags.addAll(m.collect { it[1] })
-                            }
                         }
                     }
                 }
