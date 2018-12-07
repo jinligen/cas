@@ -1,13 +1,12 @@
 package org.apereo.cas.services;
 
-import org.apereo.cas.category.DynamoDbCategory;
 import org.apereo.cas.config.CasCoreAuthenticationMetadataConfiguration;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
 import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.config.DynamoDbServiceRegistryConfiguration;
 import org.apereo.cas.util.junit.EnabledIfContinuousIntegration;
 
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
     CasCoreAuthenticationMetadataConfiguration.class,
     RefreshAutoConfiguration.class})
 @TestPropertySource(locations = "classpath:/dynamodb-serviceregistry.properties")
-@Category(DynamoDbCategory.class)
+@Tag("dynamodb")
 @EnabledIfContinuousIntegration
 public class DynamoDbServiceRegistryTests extends AbstractServiceRegistryTests {
 
