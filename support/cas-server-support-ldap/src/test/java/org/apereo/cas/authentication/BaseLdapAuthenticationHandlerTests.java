@@ -70,7 +70,9 @@ public abstract class BaseLdapAuthenticationHandlerTests {
     @Test
     public void verifyAuthenticateFailure() {
         assertNotEquals(handler.size(), 0);
-        assertThrowsWithRootCause(UncheckedException.class, FailedLoginException.class, () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("admin", "bad")))));
+        assertThrowsWithRootCause(UncheckedException.class,
+            FailedLoginException.class,
+            () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("admin", "bad")))));
     }
 
     @Test
