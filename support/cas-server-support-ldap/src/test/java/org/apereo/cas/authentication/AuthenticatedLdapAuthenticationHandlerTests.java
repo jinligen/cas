@@ -4,11 +4,13 @@ import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.util.junit.EnabledIfContinuousIntegration;
 
 import org.jooq.lambda.Unchecked;
+import org.jooq.lambda.UncheckedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import static org.apereo.cas.util.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -32,13 +34,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AuthenticatedLdapAuthenticationHandlerTests extends BaseLdapAuthenticationHandlerTests {
     @Test
     public void verifyAuthenticateNotFound() {
-        assertThrows(AccountNotFoundException.class, () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("notfound", "badpassword")))));
+        assertThrows(AccountNotFoundException.class, () -> this.handler.forEach(
+            Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("notfound", "badpassword")))));
     }
 
     @Test
     public void verifyAuthenticateFailureNotFound() {
         assertNotEquals(handler.size(), 0);
-        assertThrows(AccountNotFoundException.class,
+        assertThrowsWithRootCause(UncheckedException.class, AccountNotFoundException.class,
             () -> this.handler.forEach(Unchecked.consumer(h -> h.authenticate(new UsernamePasswordCredential("bad", "bad")))));
     }
 }
